@@ -1,9 +1,16 @@
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
 using StbImageSharp;
-
+using OpenTK.Windowing.Desktop;
+using OpenTK.Mathematics;
+using OpenTK.Graphics;
+using OpenTK.Windowing.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenTK.Windowing.Common;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace OpenTK_Playground
 {
@@ -111,6 +118,8 @@ namespace OpenTK_Playground
         int ebo;
         int textureID;
 
+        // camera
+        Camera camera;
 
         // transformation variables
         float yRot = 0f;
@@ -201,7 +210,7 @@ namespace OpenTK_Playground
             GL.ShaderSource(vertexShader, LoadShaderSource("/Users/mistaluai/RiderProjects/car-ComputerGraphicsProj/car-ComputerGraphicsProj/Shaders/default.vert")); 
             // Compile the Shader
             GL.CompileShader(vertexShader);
-           
+
             // Same as vertex shader
             int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, LoadShaderSource("/Users/mistaluai/RiderProjects/car-ComputerGraphicsProj/car-ComputerGraphicsProj/Shaders/default.frag"));
@@ -239,6 +248,9 @@ namespace OpenTK_Playground
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
             GL.Enable(EnableCap.DepthTest);
+
+            camera = new Camera(width, height, Vector3.Zero);
+            CursorState = CursorState.Grabbed;
         }
         // called once when game is closed
         protected override void OnUnload()
@@ -270,8 +282,8 @@ namespace OpenTK_Playground
 
             // transformation matrices
             Matrix4 model = Matrix4.Identity;
-            Matrix4 view = Matrix4.Identity;
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60.0f), width/height, 0.1f, 100.0f);
+            Matrix4 view = camera.GetViewMatrix();
+            Matrix4 projection = camera.GetProjectionMatrix();
 
             
             model = Matrix4.CreateRotationY(yRot);
@@ -301,15 +313,20 @@ namespace OpenTK_Playground
         // called every frame. All updating happens here
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
+            MouseState mouse = MouseState;
+            KeyboardState input = KeyboardState;
+
             base.OnUpdateFrame(args);
+            camera.Update(input, mouse, args);
         }
 
         // Function to load a text file and return its contents as a string
         public static string LoadShaderSource(string filePath)
         {
-            string shaderSource = "";
-
+            string shaderSource = ""; 
+            
             shaderSource = File.ReadAllText(filePath);
+
 
             return shaderSource;
         }

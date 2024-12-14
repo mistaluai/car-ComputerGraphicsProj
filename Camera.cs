@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Minecraft_Clone_Tutorial_Series_videoproj
+namespace OpenTK_Playground
 {
     internal class Camera
     {
