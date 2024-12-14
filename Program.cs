@@ -1,3 +1,15 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using OpenTK.Graphics.OpenGL4;
 
-Console.WriteLine("Hello, World!");
+namespace OpenTK_Playground
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (Game game = new Game(500, 500))
+            {
+                game.Run();
+            }
+        }
+    }
+}
