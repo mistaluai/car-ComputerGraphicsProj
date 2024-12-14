@@ -44,6 +44,16 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.9.3, )"
+            },
+            "StbImageSharp": {
+              "target": "Package",
+              "version": "[2.30.15, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
